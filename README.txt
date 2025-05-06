@@ -5,7 +5,7 @@ Used in
 v1 - less feature
 https://youtu.be/5ozLqt-22x0
 Lian Huan Pao - ATT II 
-6 ball pinball - in spanish should called pinball de 6 bolas
+6 ball pinball - in spanish should called pinball de 6 bolas - Popular
 https://youtu.be/44xypACAXvk?t=46
 
 

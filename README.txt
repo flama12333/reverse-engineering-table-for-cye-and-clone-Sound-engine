@@ -5,6 +5,8 @@ Used in
 v1 - less feature
 https://youtu.be/5ozLqt-22x0
 Lian Huan Pao - ATT II 
+6 ball pinball - in spanish should called pinball de 6 bolas
+https://youtu.be/44xypACAXvk?t=46
 
 
 v2 standart feature
@@ -13,9 +15,13 @@ https://youtu.be/Cca1YA-yzcc
 Good Luck 2 
 https://youtu.be/xdvTqW1Zo0Q
 
+皇冠迷13 - Crown 13
+https://youtu.be/K3dCDVs9XCQ?t=109
+
 v3 - modified feature
 Wu Lin Zhengba 
 https://youtu.be/ddU9LWYCs4E
+
 
 
 

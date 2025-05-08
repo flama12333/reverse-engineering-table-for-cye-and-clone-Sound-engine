@@ -12,12 +12,9 @@ https://youtu.be/44xypACAXvk?t=46
 v1 standart feature
 999
 https://youtu.be/Cca1YA-yzcc
-v2
+v2 - different hex 70 behavior
 Good Luck 2 
 https://youtu.be/xdvTqW1Zo0Q
-
-皇冠迷13 - Crown 13
-https://youtu.be/K3dCDVs9XCQ?t=109
 
 v3 - modified feature
 Wu Lin Zhengba 

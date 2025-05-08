@@ -1,0 +1,235 @@
+address  0000 
+Offset 00 tempo
+CH1
+Offset 01 Instrument
+Offset 02 Volume
+
+CH2
+Offset 03 Instrument
+Offset 04 Volume
+
+CH3
+Offset 05 Instrument
+Offset 06 Volume
+
+CH4
+Offset 07 Instrument
+Offset 08 Volume
+
+CH5
+Offset 09 Instrument
+Offset 0AVolume
+
+CH6
+Offset 0B Instrument
+Offset 0C Volume
+
+CH7 - Drums
+Offset 0D Volume for Drums 1?
+Offset 0E Volume for Drums 2?
+Offset 0F Volume for Drums 3?
+address  0010 
+Offset 10 Volume for Drums 4?
+Offset 11 Volume for Drums 5?
+
+Address where notes are located
+the address is inverted
+Offset 12 Channel 1
+Offset 14 Channel 2
+Offset 16 Channel 3
+Offset 18 Channel 4
+Offset 1A Channel 5
+Offset 1C Channel 6
+Offset 1E Channel 7
+
+Command hex
+
+61 staccato - idk is correct name
+
+64 - find where notes are located in address and loop per times - idk what is this
+Offset 01 - in which time to loop 
+Offset 02 and 03 - Address where notes are located
+
+65 -  Similar to hex 64 but No Loop and different - idk what is this
+Offset 01 - undocumented behavior. 
+Offset 02 and 03 - Address where notes are located
+
+66 - pitch changer
+check at offset 20 check if there are 66 to change octave or something similar
+Offset 01 - Channel 1
+Offset 02 - Channel 2
+Offset 03 - Channel 3
+Offset 04 - Channel 4
+Offset 05 - Channel 5
+Offset 06 - Channel 6
+
+70 - instrument and volume change
+Offset 01 - Instrument
+Offset 02 - Volume
+
+unknown
+80 hex. seem that was used to freeze notes in the channel
+
+Grid or something similar
+81 and FF  
+legato - Legato similar something called  piano roll bar in midi or the block like onlinesequencer
+
+Drums - Coming soon
+00 - 60 Hex notes
+07 - 60 Hex notes
+
+Musical notes
+
+Not use
+Note         Solfège         MIDI Decimal           Hexadecimal                Decimal
+C-1          Do                    0                not assigned                 0
+C#-1         Di                    1                not assigned                 1
+D-1          Re                    2                not assigned                 2
+D#-1         Ri                    3                not assigned                 3
+E-1          Mi                    4                not assigned                 4
+F-1          Fa                    5                not assigned                 5
+F#-1         Fi                    6                not assigned                 6
+A-1          La                    9                not assigned                 9
+A#-1         Li                    10               not assigned                 10
+G-1          So                    7                not assigned                 7
+G#-1         Si                    8                not assigned                 8
+B-1          Ti                    11               not assigned                 11
+C0           Do                    12               not assigned                 12
+C#0          Di                    13               not assigned                 13
+D0           Re                    14               not assigned                 14
+D#0          Ri                    15               not assigned                 15
+E0           Mi                    16               not assigned                 16
+F0           Fa                    17               not assigned                 17
+F#0          Fi                    18               not assigned                 18
+G0           So                    19               not assigned                 19
+G#0          Si                    20               not assigned                 20
+A0           La                    21               not assigned                 21
+A#0          Li                    22               not assigned                 22
+B0           Ti                    23               not assigned                 23
+
+seem that was modified to play notes in c9 until F#9 instead of C1
+C1           Do                    24                    0x00                    24 - Not use
+C#1          Di                    25                    0x01                    25 - Not use
+D1           Re                    26                    0x02                    26 - Not use
+D#1          Ri                    27                    0x03                    27 - Not use
+E1           Mi                    28                    0x04                    28 - Not use
+F1           Fa                    29                    0x05                    29 - Not use
+F#1          Fi                    30                    0x06                    30 - Not use
+
+notes used
+G1           So                    31                    0x07                    31
+G#1          Si                    32                    0x08                    32
+A1           La                    33                    0x09                    33
+A#1          Li                    34                    0x0a                    34
+B1           Ti                    35                    0x0b                    35
+C2           Do                    36                    0x0c                    36
+C#2          Di                    37                    0x0d                    37
+D2           Re                    38                    0x0e                    38
+D#2          Ri                    39                    0x0f                    39
+E2           Mi                    40                    0x10                    40
+F2           Fa                    41                    0x11                    41
+F#2          Fi                    42                    0x12                    42
+G2           So                    43                    0x13                    43
+G#2          Si                    44                    0x14                    44
+A2           La                    45                    0x15                    45
+A#2          Li                    46                    0x16                    46
+B2           Ti                    47                    0x17                    47
+C3           Do                    48                    0x18                    48
+C#3          Di                    49                    0x19                    49
+D3           Re                    50                    0x1a                    50
+D#3          Ri                    51                    0x1b                    51
+E3           Mi                    52                    0x1c                    52
+F3           Fa                    53                    0x1d                    53
+F#3          Fi                    54                    0x1e                    54
+G3           So                    55                    0x1f                    55
+G#3          Si                    56                    0x20                    56
+A3           La                    57                    0x21                    57
+A#3          Li                    58                    0x22                    58
+B3           Ti                    59                    0x23                    59
+C4           Do                    60                    0x24                    60
+C#4          Di                    61                    0x25                    61
+D4           Re                    62                    0x26                    62
+D#4          Ri                    63                    0x27                    63
+E4           Mi                    64                    0x28                    64
+F4           Fa                    65                    0x29                    65
+F#4          Fi                    66                    0x2a                    66
+G4           So                    67                    0x2b                    67
+G#4          Si                    68                    0x2c                    68
+A4           La                    69                    0x2d                    69
+A#4          Li                    70                    0x2e                    70
+B4           Ti                    71                    0x2f                    71
+C5           Do                    72                    0x30                    72
+C#5          Di                    73                    0x31                    73
+D5           Re                    74                    0x32                    74
+D#5          Ri                    75                    0x33                    75
+E5           Mi                    76                    0x34                    76
+F5           Fa                    77                    0x35                    77
+F#5          Fi                    78                    0x36                    78
+G5           So                    79                    0x37                    79
+G#5          Si                    80                    0x38                    80
+A5           La                    81                    0x39                    81
+A#5          Li                    82                    0x3a                    82
+B5           Ti                    83                    0x3b                    83
+C6           Do                    84                    0x3c                    84
+C#6          Di                    85                    0x3d                    85
+D6           Re                    86                    0x3e                    86
+D#6          Ri                    87                    0x3f                    87
+E6           Mi                    88                    0x40                    88
+F6           Fa                    89                    0x41                    89
+F#6          Fi                    90                    0x42                    90
+G6           So                    91                    0x43                    91
+G#6          Si                    92                    0x44                    92
+A6           La                    93                    0x45                    93
+A#6          Li                    94                    0x46                    94
+B6           Ti                    95                    0x47                    95
+C7           Do                    96                    0x48                    96
+C#7          Di                    97                    0x49                    97
+D7           Re                    98                    0x4a                    98
+D#7          Ri                    99                    0x4b                    99
+E7           Mi                    100                   0x4c                    100
+F7           Fa                    101                   0x4d                    101
+F#7          Fi                    102                   0x4e                    102
+G7           So                    103                   0x4f                    103
+G#7          Si                    104                   0x50                    104
+A7           La                    105                   0x51                    105
+A#7          Li                    106                   0x52                    106
+B7           Ti                    107                   0x53                    107
+
+C8           Do                    108                   0x54                    108
+C#8          Di                    109                   0x55                    109
+D8           Re                    110                   0x56                    110
+D#8          Ri                    111                   0x57                    111
+E8           Mi                    112                   0x58                    112
+F8           Fa                    113                   0x59                    113
+F#8          Fi                    114                   0x5a                    114
+G8           So                    115                   0x5b                    115
+G#8          Si                    116                   0x5c                    116
+A8           La                    117                   0x5d                    117
+A#8          Li                    118                   0x5e                    118
+B8           Ti                    119                   0x5f                    119
+C9           Do                    120                   0x60                    120 
+C#9          Di                    121                   skipped                 121 - hex 61 are used to cut
+D9           Re                    122                   skipped                 122 - hex 62 are used to end music instant. 
+D#9          Ri                    123                   skipped                 123 - hex 63 use for loop
+
+E9           Mi                    124                   skipped                 124 - hex 64 used loop per times at offset 1 and to play at address inverted at offset 2
+F9           Fa                    125                   skipped                 125 - hex 65 same of 64 but no loop and undocumented behavior
+F#9          Fi                    126                   0x66                    126 - the 66 will used at 4020 address to change pitch but if is 4027 will play notes
+G9           So                    127                   Not assigned            127
+
+
+
+
+61 62 63 64 65 66 and 70 are used. 
+
+duplicate
+they Modified to play in C9 instead of c1.
+C9           Do                    120                   0x00                    120
+C#9          Di                    121                   0x01                    121
+D9           Re                    122                   0x02                    122
+D#9          Ri                    123                   0x03                    123
+E9           Mi                    124                   0x04                    124
+F9           Fa                    125                   0x05                    125
+F#9          Fi                    126                   0x06                    126
+
+

@@ -1,0 +1,104 @@
+
+
+| Abbreviation | Full Name          | Description         | Channel(s) Used |
+| ------------ | ------------------ | ------------------- | --------------- |
+| **BD**       | Bass Drum          | Kick drum           | Channel 6       |
+| **SD**       | Snare Drum         | Classic snare hit   | Channel 7       |
+| **TM**       | Tom-Tom / High Tom | Medium/high tom hit | Channel 7       |
+| **CYM**      | Cymbal             | Crash cymbal        | Channel 8       |
+| **HH**       | Hi-Hat             | Closed hi-hat       | Channel 8       |
+
+Hex 00 and 60  for drums similar to notes but diferent
+01
+HH - Hi-Hat
+
+02
+CYM - Cymbal
+
+03
+CYM - Cymbal HH - Hi-Hat
+
+04
+TM - Tom-Tom / High Tom 
+
+05
+TM - Tom-Tom / High Tom  HH - Hi-Hat
+
+06
+TM - Tom-Tom / High Tom  CYM - Cymbal
+
+07
+TM - Tom-Tom / High Tom  CYM - Cymbal HH - Hi-Hat
+
+08
+SD - Snare Drum
+
+09
+SD - Snare Drum HH - Hi-Hat
+
+0A
+SD - Snare Drum 
+CYM - Cymbal
+
+0B
+SD - Snare Drum 
+CYM - Cymbal HH - Hi-Hat
+
+0C
+SD - Snare Drum TM - Tom-Tom / High Tom 
+
+0D
+SD - Snare Drum TM - Tom-Tom / High Tom HH - Hi-Hat
+
+0E
+SD - Snare Drum TM - Tom-Tom / High Tom CYM - Cymbal
+
+
+0F 
+SD - Snare Drum TM - Tom-Tom / High Tom CYM - Cymbal HH - Hi-Hat
+
+
+10
+BD - Bass Drum
+
+11
+BD - Bass Drum HH - Hi-Hat
+
+12
+BD - Bass Drum CYM - Cymbal
+
+13
+BD - Bass Drum CYM - Cymbal HH - Hi-Hat
+
+14
+BD - Bass Drum TM - Tom-Tom / High Tom 
+
+15 BD - Bass Drum TM - Tom-Tom / High Tom   HH - Hi-Hat 
+
+16
+BD - Bass Drum TM - Tom-Tom / High Tom CYM - Cymbal
+
+17
+BD - Bass Drum TM - Tom-Tom / High Tom CYM - Cymbal HH - Hi-Hat
+
+18
+BD - Bass Drum SD - Snare Drum
+
+19
+BD - Bass Drum SD - Snare Drum HH - Hi-Hat
+
+1A
+BD - Bass Drum SD - Snare Drum CYM - Cymbal
+
+1B
+BD - Bass Drum SD - Snare Drum CYM - Cymbal HH - Hi-Hat
+1C
+BD - Bass Drum SD - Snare Drum TM - Tom-Tom / High Tom 
+
+1D
+BD - Bass Drum SD - Snare Drum TM - Tom-Tom / High Tom HH - Hi-Hat
+
+1E
+BD - Bass Drum SD - Snare Drum TM - Tom-Tom / High Tom CYM - Cymbal 
+1F 
+BD - Bass Drum SD - Snare Drum TM - Tom-Tom / High Tom  CYM - Cymbal HH - Hi-Hat

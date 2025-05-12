@@ -1,12 +1,17 @@
-# Known issues.  when read hex 61 does not set note off and will cause to longer notes when importing on onlinesequencer. use midieditor to save.
+# Knows issues.  
+# when read hex 61 does not set note off and will cause to longer notes when importing on onlinesequencer. use midieditor to save.
 # it is possible that there may be bugs
-# event set to instrument automatic in drums affecting game hero. 
+# event set to instrument automatic in drums without control affecting game hero midi player system of roblox. 
+# Limit the range of the notes musical and drums 00 to 5f
 # Drums map not verified. may imperfectly
-# will cause to play hex 62 or 63 should not play notes.
+# will cause to play hex 62 should not play notes.
+# if read hex 00 20 40 will cause to play notes which should ignore.
 # Not implemented
-# 64 and 65 feature 
-# 70 hex automatic instrument
-# hex 66
+# 64 and 65 feature Not supported since required load hex read .hex
+# 70 hex automatic instrument and Volume also will be ignore, does the midi support change instrument from channel?.
+# 73 hex automatic set volume? also will be ignore
+# 66 hex change octave of max of  4 channel in gluck2 max of 6 channel track
+
 import mido
 from mido import MidiFile, MidiTrack, Message, MetaMessage, bpm2tempo
 

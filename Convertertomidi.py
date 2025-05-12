@@ -123,7 +123,7 @@ for ch, hex_str in enumerate(hex_strings):
             continue
               # Instrument/Volume change (70) - 2 parameters
         elif byte == 0x70:
-           if i+2 < len(da
+           if i+2 < len(data):
              instrument = data[i+1]  # Offset 1
              volume = data[i+2]      # Offset 2
              print(f"Channel {ch}: 70 command - Instrument={instrument:02X} Volume={volume:02X}")
@@ -132,7 +132,7 @@ for ch, hex_str in enumerate(hex_strings):
              print(f"Channel {ch}: Incomplete 70 command at position {i}")
              i += 1  # Skip just the command
              continue
-        # First check for standalone duration bytes (81-FF)
+        # First check for standalone duration bytes (81-FF) -- Fix me
     
         if byte in range(0x80, 0xFF):
             duration = get_grid_multiplier(byte) * base_grid

@@ -74,7 +74,6 @@ def get_drum_notes(byte):
 mid = MidiFile()
 hex_strings = [
     # Channel 0
-    # Channel 0
     "29 83 29 81 29 81 61 81 24 81 27 81 28 81 29 83 29 81 29 81 61 81 28 81 29 81 2A 81 2B 81 61 81 2B 81 61 81 2B 81 61 81 2B 81 61 81 37 81 3C 81 3A 81 37 81 35 37 81 35 34 81 32 81 24 83 24 81 24 81 61 81 24 81 25 81 26 81 27 83 26 81 26 81 61 81 26 81 26 81 26 81 24 83 24 81 24 81 61 81 24 81 24 81 24 81 2B 81 61 81 2B 81 61 81 2B 81 61 81 2B 81 61 81 40 83 43 83 48 83 45 81 43 81 40 83 40 83 3E 81 3C 81 39 81 37 81 3F 81 40 81 43 81 3E 40 40 81 43 81 40 83 43 81 3F 40 40 81 43 81 3E 81 3C 81 39 81 37 81 30 83 30 81 30 81 34 81 37 81 39 81 37 81 30 83 30 81 30 81 34 81 37 81 39 81 37 81 3E 81 40 81 43 81 3E 40 40 81 43 81 40 83 43 81 3F 40 40 81 43 81 3E 81 3C 81 39 81 37 81 ",
     # Channel 1
     "29 81 29 81 29 81 29 81 24 81 24 81 26 81 24 81 29 81 29 81 29 81 29 81 24 81 24 81 26 81 24 81 1F 81 1F 81 23 81 23 81 26 81 26 81 28 81 26 81 1F 81 61 89 29 2B 81 29 24 83 24 81 24 81 61 81 25 81 24 81 26 81 27 83 26 81 26 81 61 81 26 81 26 81 25 81 24 83 24 81 24 81 61 81 24 81 24 81 24 81 2B 81 2B 81 29 81 29 81 28 81 28 81 26 81 26 81 24 81 24 81 27 81 28 81 2B 81 2B 81 2D 81 2B 81 24 81 24 81 27 81 28 81 2B 81 2B 81 2D 81 2B 81 21 81 21 81 23 81 23 81 24 81 24 81 28 81 26 81 21 81 21 81 23 81 23 81 24 81 24 81 28 81 26 81 24 81 24 81 27 81 28 81 2B 81 2B 81 2E 81 2B 81 24 81 24 81 27 81 28 81 2B 81 2B 81 2E 81 2B 81 21 81 21 81 23 81 23 81 24 81 24 81 28 81 26 81 21 81 21 81 23 81 23 81 24 81 24 81 28 81 26 81 61 ",
@@ -87,7 +86,7 @@ hex_strings = [
     # Channel 5 (empty)
     "",
     # Channel 6 (Drums)
-   "11 81 01 81 01 81 01 81 10 81 08 08 08 08 08 81 11 81 01 81 01 81 01 81 10 81 08 08 08 08 08 81 11 81 01 81 01 81 01 81 10 81 08 08 08 08 08 81 18 83 20 8B 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 83 18 08 08 08 18 08 08 08 18 08 08 08 11 81 01 81 09 81 09 81 11 81 01 81 09 81 01 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 20",
+    "11 81 01 81 01 81 01 81 10 81 08 08 08 08 08 81 11 81 01 81 01 81 01 81 10 81 08 08 08 08 08 81 11 81 01 81 01 81 01 81 10 81 08 08 08 08 08 81 18 83 20 8B 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 08 08 08 18 83 18 08 08 08 18 08 08 08 18 08 08 08 11 81 01 81 09 81 09 81 11 81 01 81 09 81 01 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 11 81 01 81 09 81 09 81 10 81 08 08 08 08 08 81 20",
 
 ]
 
@@ -124,7 +123,7 @@ for ch, hex_str in enumerate(hex_strings):
             continue
               # Instrument/Volume change (70) - 2 parameters
         elif byte == 0x70:
-           if i+2 < len(data):
+           if i+2 < len(da
              instrument = data[i+1]  # Offset 1
              volume = data[i+2]      # Offset 2
              print(f"Channel {ch}: 70 command - Instrument={instrument:02X} Volume={volume:02X}")
@@ -133,7 +132,13 @@ for ch, hex_str in enumerate(hex_strings):
              print(f"Channel {ch}: Incomplete 70 command at position {i}")
              i += 1  # Skip just the command
              continue
-
+        # First check for standalone duration bytes (81-FF)
+    
+        if byte in range(0x80, 0xFF):
+            duration = get_grid_multiplier(byte) * base_grid
+            time_accum += duration
+            i += 1
+            continue  
 # Unknown command (73) - 1 parameter
         elif byte == 0x73:
            if i+1 < len(data):
@@ -149,7 +154,8 @@ for ch, hex_str in enumerate(hex_strings):
             time_accum += base_grid  # Always add base grid first
             
             # Check for optional duration
-            if i+1 < len(data) and data[i+1] >= 0x81:
+            if i+1 < len(data) and data[i+0] and data[i+1] >= 0x81: 
+                duration = get_grid_multiplier(data[i+0]) * base_grid
                 duration = get_grid_multiplier(data[i+1]) * base_grid
                 time_accum += duration
                 i += 2
@@ -260,9 +266,3 @@ for ch, hex_str in enumerate(hex_strings):
 # === Save MIDI ===
 mid.save('final_music_output.mid')
 print("Successfully saved 'final_music_output.mid'")
-print("Key features:")
-print("- Three identical drum mapping ranges: 00-1F, 20-3F, 40-5F")
-print("- Hex 00, 20, and 40 treated as empty spaces (no sound)")
-print("- Accurate duration handling (81=100ms, 82=200ms, ..., FF=800ms)")
-print("- Simultaneous drum notes when required")
-print("- Fixed drum note skipping bug with duration bytes")

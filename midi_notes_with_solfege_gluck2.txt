@@ -89,10 +89,10 @@ D#-1         Ri                    3                not assigned                
 E-1          Mi                    4                not assigned                 4
 F-1          Fa                    5                not assigned                 5
 F#-1         Fi                    6                not assigned                 6
-A-1          La                    9                not assigned                 9
-A#-1         Li                    10               not assigned                 10
-G-1          So                    7                not assigned                 7
-G#-1         Si                    8                not assigned                 8
+A-1          La                    7                not assigned                 9
+A#-1         Li                    8              not assigned                 10
+G-1          So                    9                not assigned                 7
+G#-1         Si                    10               not assigned                 8
 B-1          Ti                    11               not assigned                 11
 C0           Do                    12               not assigned                 12
 C#0          Di                    13               not assigned                 13
@@ -195,6 +195,8 @@ A7           La                    105                   0x51                   
 A#7          Li                    106                   0x52                    106
 B7           Ti                    107                   0x53                    107
 
+
+
 C8           Do                    108                   0x54                    108
 C#8          Di                    109                   0x55                    109
 D8           Re                    110                   0x56                    110
@@ -211,7 +213,6 @@ C9           Do                    120                   0x60                   
 C#9          Di                    121                   skipped                 121 - hex 61 are used to cut
 D9           Re                    122                   skipped                 122 - hex 62 are used to end music instant. 
 D#9          Ri                    123                   skipped                 123 - hex 63 use for loop
-
 E9           Mi                    124                   skipped                 124 - hex 64 used loop per times at offset 1 and to play at address inverted at offset 2
 F9           Fa                    125                   skipped                 125 - hex 65 same of 64 but no loop and undocumented behavior
 F#9          Fi                    126                   0x66                    126 - the 66 will used at 4020 address to change pitch but if is 4027 will play notes

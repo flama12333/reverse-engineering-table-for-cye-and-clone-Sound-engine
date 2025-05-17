@@ -96,10 +96,10 @@ D#-1         Ri                    3                not assigned                
 E-1          Mi                    4                not assigned                 4
 F-1          Fa                    5                not assigned                 5
 F#-1         Fi                    6                not assigned                 6
-A-1          La                    7                not assigned                 9
-A#-1         Li                    8               not assigned                 10
-G-1          So                    9                not assigned                 7
-G#-1         Si                    10                not assigned                 8
+A-1          La                    7                not assigned                 7
+A#-1         Li                    8               not assigned                  8
+G-1          So                    9                not assigned                 9
+G#-1         Si                    10                not assigned                10
 B-1          Ti                    11               not assigned                 11
 C0           Do                    12               not assigned                 12
 C#0          Di                    13               not assigned                 13

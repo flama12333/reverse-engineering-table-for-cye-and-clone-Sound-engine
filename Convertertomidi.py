@@ -12,20 +12,19 @@
 # Not implemented
 # 64 and 65 feature Not supported since required load hex read .hex
 # 66 hex change octave of max of  4 channel in gluck2 max of 6 channel track
-
 import mido
 from mido import MidiFile, MidiTrack, Message, MetaMessage, bpm2tempo
 
 # === Configuration ===
 ignore_end_signal = True
-bpm = 120
-base_velocity = 80
+bpm = 150
+base_velocity = 127
 tempo = bpm2tempo(bpm)
-octave_shifts = [1, 1, 1, 1, 1, 0]
-base_grid = 100  # 100ms per grid unit
+octave_shifts = [1, 1, 1, 1, 1, 1]
+base_grid = 127 # 100ms per grid unit
 
 # === Volume Configuration ===  # Default
-channel_volumes = [127, 127, 127, 127, 127, 127, 127]  # Channels 0-7
+channel_volumes = [0, 0, 0, 0, 0, 0, 0]  # Channels 0-7
 
 # Example hex input: each value from 0x00 to 0x7F
 hex_volume_input = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
@@ -66,7 +65,7 @@ print("Channel instruments:", channel_instruments)
 def get_drum_notes(byte):
     base_byte = byte & 0x1f
     drum_map = {
-            0x00:  127,                      # None But I set 127 causing to play at G9	 since how to fix to ignore?
+            0x00:  127,                       # None But I set 127 causing to play at G9	 since how to fix to ignore?
             0x01:  42,                       # HH - Closed Hi-Hat
             0x02:  59,                       # CYM - Crash Cymbal
             0x03: [59, 42],                  # CYM + HH
@@ -105,6 +104,7 @@ def get_drum_notes(byte):
 # === MIDI Setup ===
 mid = MidiFile()
 hex_strings = [
+
    # Channel 0
     "2D 81 61 81 2D 81 30 81 39 81 37 81 34 32 30 81 34 81 37 8D 61 81 39 81 39 81 3C 81 39 81 37 81 34 32 30 81 34 81 32 81 2D 8B 61 81 34 81 34 81 37 81 34 81 32 81 32 81 30 81 34 81 37 89 32 81 34 81 32 83 30 81 34 81 32 81 30 81 2D 81 30 81 30 8F 2D 81 61 81 2D 81 30 81 39 81 37 81 34 32 30 81 34 81 37 8D 61 81 39 81 39 81 3C 81 39 81 37 81 34 32 30 81 34 81 32 81 2D 8B 61 81 34 81 34 81 37 81 34 81 32 81 32 81 30 81 34 81 37 89 32 81 34 81 32 83 30 81 34 81 32 81 30 81 2D 81 30 81 30 8F 61 81 30 81 30 81 30 81 32 34 37 81 37 81 34 81 39 81 3C 8D 61 81 39 81 39 81 37 81 39 81 37 81 37 81 34 81 37 81 32 34 8C 61 83 34 81 37 81 39 81 37 81 37 81 37 81 37 81 32 34 82 32 89 61 83 36 81 35 81 35 81 35 81 37 81 39 81 39 3B 37 8D 61 83 39 81 3C 81 39 81 37 81 34 81 32 81 34 81 37 8D 61 81 39 81 39 81 3C 81 39 81 37 81 34 32 30 81 34 32 2D 8D 61 81 34 81 34 81 37 81 34 81 32 81 32 81 30 81 34 81 37 89 32 81 34 81 32 83 30 81 34 81 32 81 30 81 2D 81 30 81 30 8F 63 ",
    # Channel 1
@@ -233,7 +233,7 @@ for ch, hex_str in enumerate(hex_strings):
                 for j, note in enumerate(drum_notes):
                     track.append(Message('note_off', note=note, velocity=0,
                                          time=duration if j == 0 else 0, channel=9))
-                time_accum = 100
+                time_accum = base_grid
             else:
                 midi_note = byte + (octave_shift * 12)
                 note_velocity = min(127, int(base_velocity * (channel_volumes[ch] / 127.0)))
@@ -243,7 +243,7 @@ for ch, hex_str in enumerate(hex_strings):
                 track.append(Message('note_on', note=midi_note, velocity=note_velocity, time=time_accum, channel=ch))
                 track.append(Message('note_off', note=midi_note, velocity=0, time=duration, channel=ch))
                 current_note = midi_note
-                time_accum = 100
+                time_accum = base_grid
             i += 2
             continue
 

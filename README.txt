@@ -1,5 +1,4 @@
 the purpose is to create Custom converter python raw to mid 
-in the future to compete gamehero midi and the wild west roblox with midi player by creating script distributed by me.
 Used in
 
 v1 - less feature

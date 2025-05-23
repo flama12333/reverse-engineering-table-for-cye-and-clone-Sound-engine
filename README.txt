@@ -1,5 +1,7 @@
 the purpose is to create Custom converter python raw to mid 
 Used in
+Crown 13 - 皇冠迷13
+https://youtu.be/K3dCDVs9XCQ?t=108
 
 v1 - less feature
 https://youtu.be/5ozLqt-22x0
@@ -36,6 +38,7 @@ Wu Lin Zhengba - z80 sound cpu
 
 Todo Create python code for converter to midi
 
+Also Please get this 皇冠迷13 and dump to emulate
 
 
 

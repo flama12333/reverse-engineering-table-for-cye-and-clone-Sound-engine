@@ -40,9 +40,6 @@ Todo Create python code for converter to midi
 
 Also Please get this 皇冠迷13 and dump to emulate
 
-I think someone needs to see this to convert music data from that format to a tic.
-https://github.com/wojciech-graj/TIC-MIDI
-
 
 
 

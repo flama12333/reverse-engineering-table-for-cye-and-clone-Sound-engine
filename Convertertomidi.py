@@ -1,6 +1,7 @@
 
 # known issues: 
-# change program is not  working in gamehero midi - make sure to enable MoreStrictProgChange = true
+# change program is not  working in gamehero midi.
+# make sure to enable MoreStrictProgChange = true
 # event set to instrument automatic in drums without control affecting game hero midi player system of roblox. 
 # it is possible that there may be bugs
 
@@ -10,7 +11,7 @@
 # Drums map not verified. may imperfectly
 # will cause to play hex 62 should not play notes.
 # if read hex 00 20 40 will cause to play notes which should ignore.
-
+# at 20 None But I set 127 causing to play at G9	 since how to fix to ignore?
 # Partially implemented
 # 70 hex automatic instrument  and Volume 
 # 73 hex automatic set volume only
@@ -20,7 +21,7 @@
 # Need switch True Or False to ignore
 # 63 - loop
 # 62 - no loop instant stop 
-
+#  instrument and bank if 80 then 00
 
 import mido
 from mido import MidiFile, MidiTrack, Message, MetaMessage, bpm2tempo
@@ -28,134 +29,134 @@ from mido import MidiFile, MidiTrack, Message, MetaMessage, bpm2tempo
 # === Custom MIDI Instrument Mapping ===
 MIDI_INSTRUMENT_MAP = {
     # Standard GM 1-128 (with hex 00-7F and 80-FF both mapping to 0-127)
-    0x00: 0,    # Acoustic Grand Piano
-    0x01: 1,    # Bright Acoustic Piano
-    0x02: 2,    # Electric Grand Piano
-    0x03: 3,    # Honky-tonk Piano
-    0x04: 4,    # Electric Piano 1
-    0x05: 5,    # Electric Piano 2
-    0x06: 6,    # Harpsichord
-    0x07: 7,    # Clavinet
-    0x08: 8,    # Celesta
-    0x09: 9,    # Glockenspiel
-    0x0A: 10,   # Music Box
-    0x0B: 11,   # Vibraphone
-    0x0C: 12,   # Marimba
-    0x0D: 13,   # Xylophone
-    0x0E: 14,   # Tubular Bells
-    0x0F: 15,   # Dulcimer
-    0x10: 16,   # Drawbar Organ
-    0x11: 17,   # Percussive Organ
-    0x12: 18,   # Rock Organ
-    0x13: 19,   # Church Organ
-    0x14: 20,   # Reed Organ
-    0x15: 21,   # Accordion
-    0x16: 22,   # Harmonica
-    0x17: 23,   # Tango Accordion
-    0x18: 24,   # Acoustic Guitar (nylon)
-    0x19: 25,   # Acoustic Guitar (steel)
-    0x1A: 26,   # Electric Guitar (jazz)
-    0x1B: 27,   # Electric Guitar (clean)
-    0x1C: 28,   # Electric Guitar (muted)
-    0x1D: 29,   # Overdriven Guitar
-    0x1E: 30,   # Distortion Guitar
-    0x1F: 31,   # Guitar Harmonics
-    0x20: 32,   # Acoustic Bass
-    0x21: 33,   # Electric Bass (finger)
-    0x22: 34,   # Electric Bass (pick)
-    0x23: 35,   # Fretless Bass
-    0x24: 36,   # Slap Bass 1
-    0x25: 37,   # Slap Bass 2
-    0x26: 38,   # Synth Bass 1
-    0x27: 39,   # Synth Bass 2
-    0x28: 40,   # Violin
-    0x29: 41,   # Viola
-    0x2A: 42,   # Cello
-    0x2B: 43,   # Contrabass
-    0x2C: 44,   # Tremolo Strings
-    0x2D: 45,   # Pizzicato Strings
-    0x2E: 46,   # Orchestral Harp
-    0x2F: 47,   # Timpani
-    0x30: 48,   # String Ensemble 1
-    0x31: 49,   # String Ensemble 2
-    0x32: 50,   # Synth Strings 1
-    0x33: 51,   # Synth Strings 2
-    0x34: 52,   # Choir Aahs
-    0x35: 53,   # Voice Oohs
-    0x36: 54,   # Synth Voice
-    0x37: 55,   # Orchestra Hit
-    0x38: 56,   # Trumpet
-    0x39: 57,   # Trombone
-    0x3A: 58,   # Tuba
-    0x3B: 59,   # Muted Trumpet
-    0x3C: 60,   # French Horn
-    0x3D: 61,   # Brass Section
-    0x3E: 62,   # Synth Brass 1
-    0x3F: 63,   # Synth Brass 2
-    0x40: 64,   # Soprano Sax
-    0x41: 65,   # Alto Sax
-    0x42: 66,   # Tenor Sax
-    0x43: 67,   # Baritone Sax
-    0x44: 68,   # Oboe
-    0x45: 69,   # English Horn
-    0x46: 70,   # Bassoon
-    0x47: 71,   # Clarinet
-    0x48: 72,   # Piccolo
-    0x49: 73,   # Flute
-    0x4A: 74,   # Recorder
-    0x4B: 75,   # Pan Flute
-    0x4C: 76,   # Blown Bottle
-    0x4D: 77,   # Shakuhachi
-    0x4E: 78,   # Whistle
-    0x4F: 79,   # Ocarina
-    0x50: 80,   # Lead 1 (square)
-    0x51: 81,   # Lead 2 (sawtooth)
-    0x52: 82,   # Lead 3 (calliope)
-    0x53: 83,   # Lead 4 (chiff)
-    0x54: 84,   # Lead 5 (charang)
-    0x55: 85,   # Lead 6 (voice)
-    0x56: 86,   # Lead 7 (fifths)
-    0x57: 87,   # Lead 8 (bass + lead)
-    0x58: 88,   # Pad 1 (new age)
-    0x59: 89,   # Pad 2 (warm)
-    0x5A: 90,   # Pad 3 (polysynth)
-    0x5B: 91,   # Pad 4 (choir)
-    0x5C: 92,   # Pad 5 (bowed)
-    0x5D: 93,   # Pad 6 (metallic)
-    0x5E: 94,   # Pad 7 (halo)
-    0x5F: 95,   # Pad 8 (sweep)
-    0x60: 96,   # FX 1 (rain)
-    0x61: 97,   # FX 2 (soundtrack)
-    0x62: 98,   # FX 3 (crystal)
-    0x63: 99,   # FX 4 (atmosphere)
-    0x64: 100,  # FX 5 (brightness)
-    0x65: 101,  # FX 6 (goblins)
-    0x66: 102,  # FX 7 (echoes)
-    0x67: 103,  # FX 8 (sci-fi)
-    0x68: 104,  # Sitar
-    0x69: 105,  # Banjo
-    0x6A: 106,  # Shamisen
-    0x6B: 107,  # Koto
-    0x6C: 108,  # Kalimba
-    0x6D: 109,  # Bagpipe
-    0x6E: 110,  # Fiddle
-    0x6F: 111,  # Shanai
-    0x70: 112,  # Tinkle Bell
-    0x71: 113,  # Agogo
-    0x72: 114,  # Steel Drums
-    0x73: 115,  # Woodblock
-    0x74: 116,  # Taiko Drum
-    0x75: 117,  # Melodic Tom
-    0x76: 118,  # Synth Drum
-    0x77: 119,  # Reverse Cymbal
-    0x78: 120,  # Guitar Fret Noise
-    0x79: 121,  # Breath Noise
-    0x7A: 122,  # Seashore
-    0x7B: 123,  # Bird Tweet
-    0x7C: 124,  # Telephone Ring
-    0x7D: 125,  # Helicopter
-    0x7E: 126,  # Applause
-    0x7F: 127,  # Gunshot
+    0x00: 0,    # 7 or 28 Acoustic Grand Piano
+    0x01: 26,    # Bright Acoustic Piano
+    0x02: 31,    # Electric Grand Piano
+    0x03:  7,    # Honky-tonk Piano
+    0x04: 0,    # Electric Piano 1
+    0x05: 0,    # Electric Piano 2
+    0x06: 0,    # Harpsichord
+    0x07: 0,    # Clavinet
+    0x08: 0,    # Celesta
+    0x09: 0,    # Glockenspiel
+    0x0A: 0,   # Music Box
+    0x0B: 0,   # Vibraphone
+    0x0C: 0,   # Marimba
+    0x0D: 0,   # Xylophone
+    0x0E: 0,   # Tubular Bells
+    0x0F: 0,   # Dulcimer
+    0x10: 00,   # Drawbar Organ
+    0x11: 00,   # Percussive Organ
+    0x12: 00,   # Rock Organ
+    0x13: 00,   # Church Organ
+    0x14: 00,   # Reed Organ
+    0x15: 00,   # Accordion
+    0x16: 00,   # Harmonica
+    0x17: 00,   # Tango Accordion
+    0x18: 34,   # Acoustic Guitar (nylon)
+    0x19: 00,   # Acoustic Guitar (steel)
+    0x1A: 00,   # Electric Guitar (jazz)
+    0x1B: 00,   # Electric Guitar (clean)
+    0x1C: 00,   # Electric Guitar (muted)
+    0x1D: 00,   # Overdriven Guitar
+    0x1E: 00,   # Distortion Guitar
+    0x1F: 00,   # Guitar Harmonics
+    0x20: 00,   # Acoustic Bass
+    0x21: 00,   # Electric Bass (finger)
+    0x22: 00,   # Electric Bass (pick)
+    0x23: 00,   # Fretless Bass
+    0x24: 00,   # Slap Bass 1
+    0x25: 00,   # Slap Bass 2
+    0x26: 00,   # Synth Bass 1
+    0x27: 00,   # Synth Bass 2
+    0x28: 00,   # Violin
+    0x29: 00,   # Viola
+    0x2A: 00,   # Cello
+    0x2B: 00,   # Contrabass
+    0x2C: 00,   # Tremolo Strings
+    0x2D: 00,   # Pizzicato Strings
+    0x2E: 00,   # Orchestral Harp
+    0x2F: 00,   # Timpani
+    0x30: 00,   # String Ensemble 1
+    0x31: 00,   # String Ensemble 2
+    0x32: 00,   # Synth Strings 1
+    0x33: 00,   # Synth Strings 2
+    0x34: 00,   # Choir Aahs
+    0x35: 00,   # Voice Oohs
+    0x36: 00,   # Synth Voice
+    0x37: 00,   # Orchestra Hit
+    0x38: 00,   # Trumpet
+    0x39: 00,   # Trombone
+    0x3A: 00,   # Tuba
+    0x3B: 00,   # Muted Trumpet
+    0x3C: 00,   # French Horn
+    0x3D: 00,   # Brass Section
+    0x3E: 00,   # Synth Brass 1
+    0x3F: 00,   # Synth Brass 2
+    0x40: 00,   # Soprano Sax
+    0x41: 00,   # Alto Sax
+    0x42: 00,   # Tenor Sax
+    0x43: 00,   # Baritone Sax
+    0x44: 00,   # Oboe
+    0x45: 00,   # English Horn
+    0x46: 00,   # Bassoon
+    0x47: 00,   # Clarinet
+    0x48: 00,   # Piccolo
+    0x49: 00,   # Flute
+    0x4A: 00,   # Recorder
+    0x4B: 00,   # Pan Flute
+    0x4C: 00,   # Blown Bottle
+    0x4D: 00,   # Shakuhachi
+    0x4E: 00,   # Whistle
+    0x4F: 00,   # Ocarina
+    0x50: 00,   # Lead 1 (square)
+    0x51: 00,   # Lead 2 (sawtooth)
+    0x52: 00,   # Lead 3 (calliope)
+    0x53: 00,   # Lead 4 (chiff)
+    0x54: 00,   # Lead 5 (charang)
+    0x55: 00,   # Lead 6 (voice)
+    0x56: 00,   # Lead 7 (fifths)
+    0x57: 00,   # Lead 8 (bass + lead)
+    0x58: 62,   # Pad 1 (new age)
+    0x59: 00,   # Pad 2 (warm)
+    0x5A: 00,   # Pad 3 (polysynth)
+    0x5B: 00,   # Pad 4 (choir)
+    0x5C: 00,   # Pad 5 (bowed)
+    0x5D: 00,   # Pad 6 (metallic)
+    0x5E: 00,   # Pad 7 (halo)
+    0x5F: 00,   # Pad 8 (sweep)
+    0x60: 00,   # FX 1 (rain)
+    0x61: 00,   # FX 2 (soundtrack)
+    0x62: 00,   # FX 3 (crystal)
+    0x63: 00,   # FX 4 (atmosphere)
+    0x64: 00,  # FX 5 (brightness)
+    0x65: 00,  # FX 6 (goblins)
+    0x66: 00,  # FX 7 (echoes)
+    0x67: 00,  # FX 8 (sci-fi)
+    0x68: 00,  # Sitar
+    0x69: 00,  # Banjo
+    0x6A: 00,  # Shamisen
+    0x6B: 00,  # Koto
+    0x6C: 00,  # Kalimba
+    0x6D: 00,  # Bagpipe
+    0x6E: 00,  # Fiddle
+    0x6F: 00,  # Shanai
+    0x70: 00,  # Tinkle Bell
+    0x71: 00,  # Agogo
+    0x72: 00,  # Steel Drums
+    0x73: 00,  # Woodblock
+    0x74: 00,  # Taiko Drum
+    0x75: 00,  # Melodic Tom
+    0x76: 00,  # Synth Drum
+    0x77: 00,  # Reverse Cymbal
+    0x78: 00,  # Guitar Fret Noise
+    0x79: 00,  # Breath Noise
+    0x7A: 00,  # Seashore
+    0x7B: 00,  # Bird Tweet
+    0x7C: 00,  # Telephone Ring
+    0x7D: 00,  # Helicopter
+    0x7E: 00,  # Applause
+    0x7F: 00,  # Gunshot
     
     # Extended mapping for 0x80-0xFF (same as 0x00-0x7F)
     **{i: i - 0x80 for i in range(0x80, 0x100)}
@@ -180,21 +181,20 @@ def handle_instrument_change(track, channel, hex_value, time_accum=0):
     return 0  # Reset accumulated time
 
 # === Configuration ===
-ignore_end_signal = True
-bpm = 137
+bpm = 150
 base_velocity = 127
 tempo = bpm2tempo(bpm)
 octave_shifts = [1, 1, 1, 1, 1, 1]
-base_grid = 127 # 100ms per grid unit
+base_grid = 127 # 127ms per grid unit
 
 # === Volume Configuration ===  # Default
-channel_volumes = [15, 15, 15, 0, 0, 0, 0]  # Channels 0-7
+channel_volumes = [0, 0, 0, 0, 0, 0, 0]  # Channels 0-7
 
 # Example hex input: each value from 0x00 to 0x7F
 hex_volume_input = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
 
 # Instrument configuration
-channel_instruments = [0, 0, 0, 0, 0, 0]  # Default instruments for channels 0-5 (0 = Acoustic Grand Piano)
+channel_instruments = [1, 1, 1, 1, 1, 1]  # Default instruments for channels 0-5 (0 = Acoustic Grand Piano)
 hex_instrument_input = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00]  # Example instrument input (1-based)
 
 def hex_to_volume(hex_list):
@@ -223,7 +223,7 @@ if hex_instrument_input and len(hex_instrument_input) == 6:
 def get_drum_notes(byte):
     base_byte = byte & 0x1f
     drum_map = {
-            0x00:  127,                       # None But I set 127 causing to play at G9	 since how to fix to ignore?
+            0x00:  127,                      # 
             0x01:  42,                       # HH - Closed Hi-Hat
             0x02:  59,                       # CYM - Crash Cymbal
             0x03: [59, 42],                  # CYM + HH
@@ -255,37 +255,37 @@ def get_drum_notes(byte):
             0x1D: [35, 38, 41, 42],          # BD + SD + TM + HH
             0x1E: [35, 38, 41, 59],          # BD + SD + TM + CYM
             0x1F: [35, 38, 41, 59, 42],      # BD + SD + TM + CYM + HH
+            
     }
-    
     return drum_map.get(base_byte, [])
 
 # === MIDI Setup ===
 mid = MidiFile()
 hex_strings = [
 
-   # Channel 0
-    "70 15 02 61 83 37 81 36 81 39 81 37 81 34 81 30 81 2B 85 37 81 34 85 32 81 30 81 2F 81 2D 81 2F 81 30 85 2D 81 2B 8F 61 83 2B 81 2D 81 30 81 2F 81 2D 81 2B 81 35 85 32 81 2F 85 2D 81 2B 81 2D 81 2F 81 32 81 2D 85 2F 81 30 8F 70 27 01 61 83 37 81 36 81 39 81 37 81 34 81 30 81 2B 85 37 81 34 85 32 81 30 81 2F 81 2D 81 2F 81 30 85 2D 81 2B 8F 61 83 2B 81 2D 81 30 81 2F 81 2D 81 2B 81 35 85 32 81 2F 85 2D 81 2B 81 2D 81 2F 81 32 81 39 85 37 81 34 8F 61 83 37 81 36 81 39 81 37 81 34 81 30 81 2B 85 37 81 34 85 32 81 30 81 2F 81 2D 81 2F 81 30 85 2D 81 2B 8F 61 83 2B 81 2D 81 30 81 2F 81 2D 81 2B 81 35 85 32 81 2F 85 2D 81 2B 81 2D 81 2F 81 32 81 2D 85 2F 81 30 8F 61 83 30 83 35 83 37 83 39 87 35 87 61 81 39 81 3B 81 3C 81 3B 85 39 81 39 87 37 8D 37 81 34 81 35 81 37 81 39 81 34 87 32 87 61 81 34 81 32 81 2D 81 30 81 2F 83 30 81 32 8F 61 83 37 81 36 81 39 81 37 81 34 81 30 81 2B 85 37 81 34 85 32 81 30 81 2F 81 2D 81 2F 81 30 85 2D 81 2B 8F 61 83 2B 81 2D 81 30 81 2F 81 2D 81 2B 81 35 85 32 81 2F 85 2D 81 2B 81 2D 81 2F 81 32 81 2D 85 2F 81 30 8F 70 14 02 61 83 37 81 36 81 39 81 37 81 34 81 30 81 2B 85 37 81 34 85 32 81 30 81 2F 81 2D 81 2F 81 30 85 2D 81 2B 8F 61 83 2B 81 2D 81 30 81 2F 81 2D 81 2B 81 35 85 32 81 2F 85 2D 81 2B 81 2D 81 2F 81 32 81 2D 85 2F 81 30 8F 61 9F 63",   
-   # Channel 1
 
-    "70 15 02 61 83 37 81 36 81 39 81 37 81 34 81 30 81 2B 85 37 81 34 85 32 81 30 81 2F 81 2D 81 2F 81 30 85 2D 81 2B 8F 61 83 2B 81 2D 81 30 81 2F 81 2D 81 2B 81 35 85 32 81 2F 85 2D 81 2B 81 2D 81 2F 81 32 81 2D 85 2F 81 30 8F 70 27 01 61 83 37 81 36 81 39 81 37 81 34 81 30 81 2B 85 37 81 34 85 32 81 30 81 2F 81 2D 81 2F 81 30 85 2D 81 2B 8F 61 83 2B 81 2D 81 30 81 2F 81 2D 81 2B 81 35 85 32 81 2F 85 2D 81 2B 81 2D 81 2F 81 32 81 39 85 37 81 34 8F 61 83 37 81 36 81 39 81 37 81 34 81 30 81 2B 85 37 81 34 85 32 81 30 81 2F 81 2D 81 2F 81 30 85 2D 81 2B 8F 61 83 2B 81 2D 81 30 81 2F 81 2D 81 2B 81 35 85 32 81 2F 85 2D 81 2B 81 2D 81 2F 81 32 81 2D 85 2F 81 30 8F 61 83 30 83 35 83 37 83 39 87 35 87 61 81 39 81 3B 81 3C 81 3B 85 39 81 39 87 37 8D 37 81 34 81 35 81 37 81 39 81 34 87 32 87 61 81 34 81 32 81 2D 81 30 81 2F 83 30 81 32 8F 61 83 37 81 36 81 39 81 37 81 34 81 30 81 2B 85 37 81 34 85 32 81 30 81 2F 81 2D 81 2F 81 30 85 2D 81 2B 8F 61 83 2B 81 2D 81 30 81 2F 81 2D 81 2B 81 35 85 32 81 2F 85 2D 81 2B 81 2D 81 2F 81 32 81 2D 85 2F 81 30 8F 70 14 02 61 83 37 81 36 81 39 81 37 81 34 81 30 81 2B 85 37 81 34 85 32 81 30 81 2F 81 2D 81 2F 81 30 85 2D 81 2B 8F 61 83 2B 81 2D 81 30 81 2F 81 2D 81 2B 81 35 85 32 81 2F 85 2D 81 2B 81 2D 81 2F 81 32 81 2D 85 2F 81 30 8F 61 9F 63",   
-   # Channel 2 (empty)
-    "",
 
-   
-   # Channel 3 (empty)
-    "",
+   # Channel 0 - 1 
+    "3C 83 37 83 39 83 37 83 3C 83 37 83 39 83 37 83 34 83 61 81 30 81 37 83 61 81 34 81 3C 81 34 81 3B 81 34 81 39 81 37 81 34 81 30 81 35 83 61 81 2F 81 37 83 61 81 2F 81 3B 81 32 81 39 81 32 81 37 81 35 81 2D 81 2F 81 34 83 61 81 30 81 37 83 61 81 34 81 3C 81 34 81 3B 81 34 81 39 81 37 81 34 81 30 81 35 81 2F 81 32 81 35 81 39 81 37 81 2D 81 2F 81 30 8F 40 85 3C 81 43 85 40 81 48 81 40 81 47 81 40 81 45 81 43 81 40 81 3C 81 41 83 61 81 3B 81 43 83 61 81 3B 81 47 81 3E 81 45 81 3E 81 43 81 41 81 39 81 3B 81 40 85 3C 81 43 85 40 81 48 83 47 83 45 81 43 81 40 81 3C 81 41 81 3B 81 3E 81 41 81 45 81 43 81 39 81 3B 81 3C 8B 40 81 61 81 40 81 61 81 3E 87 3E 81 61 81 3C 81 61 81 3C 87 3C 81 61 81 3B 81 61 81 39 85 39 81 39 81 39 81 39 81 61 81 37 87 34 81 61 81 34 81 61 81 32 87 32 81 61 81 3C 81 61 81 3C 87 3C 81 61 81 3B 81 61 81 39 87 37 83 30 8F 63",
+   # Channel 1 - 2
+   "61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 43 8B 41 83 45 87 40 83 40 83 43 83 3E 83 3C 83 3C 81 3C 81 3C 83 3C 8B 43 83 3E 87 41 83 45 83 40 8B 61 8F 61 8F 61 8F",
 
+   # Channel 2 - 3
+    "61 9F 24 87 1F 87 24 87 1F 87 1F 87 1A 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 61 8F",
+   # Channel 3 - 4
+    "61 9F 24 87 1F 87 24 87 1F 87 1F 87 1A 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 61 8F",
     
-   # Channel 4
-    "24 87 28 83 2B 83 24 87 28 83 2B 83 29 87 26 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 24 87 28 83 2B 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 29 87 26 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 24 87 28 83 2B 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 29 87 26 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 24 87 28 83 2B 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 21 87 26 83 26 83 26 87 29 83 2D 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 29 87 26 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 24 87 28 83 2B 83 24 87 28 83 2B 83 24 87 28 83 2B 83 29 87 26 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 24 87 28 83 2B 83 61 9F 61 8F",   
+   # Channel 4 - 5
+    "",
+
+   # Channel 5 - 6
+    "",
+
+   # Channel 6 (Drums) -7 - 5
+    "10 83 10 83 10 83 10 83 10 83 10 83 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 20 8F",
 
 
 
-   # Channel 5
-    "24 87 28 83 2B 83 24 87 28 83 2B 83 29 87 26 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 24 87 28 83 2B 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 29 87 26 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 24 87 28 83 2B 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 29 87 26 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 24 87 28 83 2B 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 21 87 26 83 26 83 26 87 29 83 2D 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 29 87 26 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 24 87 28 83 2B 83 24 87 28 83 2B 83 24 87 28 83 2B 83 29 87 26 83 26 83 1F 87 23 83 26 83 24 87 28 83 2B 83 29 87 2F 83 2F 83 1F 87 23 83 26 83 24 87 28 83 2B 83 61 9F 61 8F",   
-
-   # Channel 6 (Drums)
-    "15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 15 81 01 81 09 81 11 81 20 8F",   
 
 
 ]  # 7 channels
@@ -318,13 +318,39 @@ for ch, hex_str in enumerate(hex_strings):
 
     while i < len(data):
         byte = data[i]
-
-        if byte == 0x63:
-            if not ignore_end_signal:
-                break
-            i += 1
+        if byte == 0x61:
+            time_accum += base_grid
+            if i + 1 < len(data) and data[i + 1] >= 0x81:
+                duration = get_grid_multiplier(data[i + 1]) * base_grid
+                time_accum += duration
+                i += 2
+            else:
+                i += 1
             continue
 
+        elif byte == 0x62:
+
+            i += 1
+            continue
+        elif byte == 0x63:
+
+            i += 1
+            continue
+            
+        elif byte == 0x64 and i + 3 < len(data):
+            loop_time = data[i + 1]
+            addr_le = data[i + 2] | (data[i + 3] << 8)  # Little endian to int
+            print(f"Channel {ch}: 64 command - Loop {loop_time}x and Jump address 0x{addr_le:04X}")
+            i += 4
+            continue
+
+        elif byte == 0x65 and i + 3 < len(data):
+            unk = data[i + 1]
+            addr_le = data[i + 2] | (data[i + 3] << 8)
+            print(f"Channel {ch}: 65 command - [Split] unk and {unk}x Jump to address 0x{addr_le:04X}")
+            i += 4
+            continue
+            
         elif byte == 0x70:
             if i + 2 < len(data):
                 instrument = data[i + 1]
@@ -378,15 +404,7 @@ for ch, hex_str in enumerate(hex_strings):
             i += 1
             continue
 
-        elif byte == 0x61:
-            time_accum += base_grid
-            if i + 1 < len(data) and data[i + 1] >= 0x81:
-                duration = get_grid_multiplier(data[i + 1]) * base_grid
-                time_accum += duration
-                i += 2
-            else:
-                i += 1
-            continue
+
 
         elif byte in range(0x00, 0x5f) and i + 1 < len(data) and data[i + 1] >= 0x81:
             duration = get_grid_multiplier(data[i + 1]) * base_grid

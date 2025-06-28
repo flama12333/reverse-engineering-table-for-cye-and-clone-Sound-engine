@@ -39,7 +39,7 @@ Wu Lin Zhengba - z80 sound cpu
 Todo Create python code for converter to midi
 
 Also Please get this 皇冠迷13 and dump to emulate
-
+Verify everthing
 
 
 

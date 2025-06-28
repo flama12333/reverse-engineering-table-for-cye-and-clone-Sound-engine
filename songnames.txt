@@ -1,0 +1,110 @@
+999
+A
+
+01 sfx 1 startup 
+02 sfx 2 lose - unused
+03Take score - v1
+
+B
+
+01 Turkey in the straw - attract song
+02 unknown? - Ver a
+02 unknown? - Ver b
+02 unknown? - Ver c
+03 Marching Through Georgia - Ver a
+03 Marching Through Georgia - Ver b
+03 Marching Through Georgia - Ver c
+04 Aida Act II - Triumphal March - Ver a
+04 Aida Act II - Triumphal March - Ver b
+04 Aida Act II - Triumphal March - Ver c
+05 unknown? - Ver a
+05 unknown? - Ver b
+06 unknown? - Ver c
+06 Wooden Heart - Ver a
+06 Wooden Heart - Ver b
+06 Wooden Heart - Ver c
+07 unknown? - Ver a
+07 unknown? - Ver b
+07 unknown? - Ver c
+08 Sound similar to glory glory glory hallelujah - Ver a
+08 Sound similar to glory glory glory hallelujah - Ver b
+08 Sound similar to glory glory glory hallelujah - Ver c
+09 unknown?  - Ver a
+09 unknown?  - Ver b
+09 unknown?  - Ver .c
+10  There is a fountain - Ver .a
+10  There is a fountain - Ver .b
+11 Prelude from Carmen - Ver .a
+11 Prelude from Carmen - Ver .b
+11 Prelude from Carmen - Ver .c
+
+gluck2
+
+A
+
+01 sfx
+02 unused
+03 Win in double up
+04 Lose in double up - take score
+05 last chance to hold to change 1 card
+06 Lose
+
+B
+
+01 Venus - Frankie Avalon - bgm 1 +  - unused  - set 1
+02 More Than I Can Say - Leo Sayer - bgm 2
+03  Walk, Don't Run - The Ventures - bgm 3  - set 2
+04 unknown song - bgm 4
+05 Isle of Capri - Wilhelm Grosz - bgm 5
+06 春風吻上我的臉 - Yao Lee - bgm 6
+07  Red River Rock - Johnny and the Hurricanes  - set 2
+08 月桃花 - Yao Lee - A and B  attract song - bgm 8
+09 My Blue Heaven - Walter Donaldson bgm 9
+10 unknown - bgm 10
+11 Music box dancer - Frank Mills   +  - set 2
+12 Wan Xia - 晚霞  - Julie Yeh - bgm 12
+13 Kinjirareta Koi - 禁じられた恋 - Saori Yuki  - bgm 13  - set 2
+14 Wo Shi Yi Zhi Hua Mei Niao -  我是一隻畫眉鳥 - Poon Sow Keng - bgm 14
+15 Rose, Rose, I Love You - 玫瑰玫瑰我爱你 - Yao Lee - Fong Fei Fei - bgm 15  - unused
+16 Ie Rai Shan - 夜來香 - Teresa Teng - bgm 16  - unused
+
+wulin
+
+A
+
+01 Win in double up
+02 Lose in double up - take score
+03 last chance to hold to change 1 card
+04 Lose
+05 Battle Hymn of the Republic,
+06 Military March - Schubert 
+07 unknown
+08 Schumann Wild Horseman Op 68 No 8
+
+B
+
+01 Red River Rock - Johnny and the Hurricanes - set 4
+02 Venus - Frankie Avalon  - set 3
+03 Wheels - Billy Vaughn  - set 3
+04 Let's Go - The Ventures  - set 2
+05 Love Potion Number 9 - The Searchers   - set 2
+06 unknown song 6
+07 /  La bamba - Ritchie Valens - unused?  - set 2
+08  + The Final Countdown - Europe - Arranged by Sunkiss chen
+09 Cha Cha Cha - Finzy Kontini  - attract mode  - Arranged by Sunkiss chen
+10 Limbo Rock - Chubby Checker  - Arranged by Sunkiss chen
+11  Mister Cannibal - Andy Fisher - no loop  - Arranged by Sunkiss chen - set 3
+12 Last Christmas - George Michael  - Arranged by Sunkiss chen
+13 % Symphony No. 40 in G minor k. 550 i. - Mozart   - Arranged by Sunkiss chen
+14 Baby elephant walk  - Arranged by Sunkiss chen - set 3
+15 Hungarian Dance No. 5 - Johannes Brahms
+16 +  Emerald Hill Zone (2P) - Sonic the Hedgehog 2    - Masato Nakamura - copied by Sunkiss chen 
+17 *  Results - Sonic the Hedgehog 2  - corrupted and incompleted
+
+ATT II
+01 - startup
+02 - unknown?
+03%  - unknown?
+04 - unknown?
+05 - Lambada
+06 - 张勇强 - ver 3 - arranged by sunkiss chen

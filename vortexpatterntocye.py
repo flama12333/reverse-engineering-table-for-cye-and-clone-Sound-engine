@@ -6,7 +6,7 @@
    # Volume 0-F
    # Envelope Generator Period 0-FFFF and Envelope Type 1-E
    # Unsuported feature.
-   # #noise. might be required to convert to simulate drums noise
+   # noise. might be required to convert to simulate drums noise
 import re
 
 def note_to_hex(note_str):

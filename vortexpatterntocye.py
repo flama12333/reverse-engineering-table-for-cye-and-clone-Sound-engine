@@ -1,3 +1,10 @@
+   # Missing Feature:
+   # Samples 1-9 A-B
+   # Envelope Type 1-E. F To off
+   # Ornament 0-F
+   # Volume 0-F
+
+
 import re
 
 def note_to_hex(note_str):

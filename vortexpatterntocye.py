@@ -1,9 +1,9 @@
+   # Experimental code to convert pattern save using Vortrex tracker to custom to make playable in ym2413 or ym3812
    # Missing Feature:
    # Samples 1-9 A-B
-   # Envelope Type 1-E. F To off
+   # Envelope Type 1-F
    # Ornament 0-F
    # Volume 0-F
-
 
 import re
 

@@ -1,10 +1,12 @@
-   # Experimental code to convert pattern save using Vortrex tracker to custom to make playable in ym2413 or ym3812
+   # Experimental code to convert pattern save using Vortex tracker to custom to make playable in ym2413 or ym3812
    # Missing Feature:
    # Samples 1-9 A-B
    # Envelope Type 1-F
    # Ornament 0-F
    # Volume 0-F
-
+   # Envelope Generator Period 0-FFFF and Envelope Type 1-E
+   # Unsuported feature.
+   # #noise. might be required to convert to simulate drums noise
 import re
 
 def note_to_hex(note_str):

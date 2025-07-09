@@ -5,6 +5,7 @@
    # Ornament 0-F
    # Volume 0-F
    # Envelope Generator Period 0-FFFF and Envelope Type 1-E
+   # Noise Generator Base Period 0-1f
    # Unsuported feature.
    # noise. might be required to convert to simulate drums noise
 import re

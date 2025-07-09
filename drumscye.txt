@@ -37,12 +37,10 @@ SD - Snare Drum
 SD - Snare Drum HH - Hi-Hat
 
 0A
-SD - Snare Drum 
-CYM - Cymbal
+SD - Snare Drum CYM - Cymbal
 
 0B
-SD - Snare Drum 
-CYM - Cymbal HH - Hi-Hat
+SD - Snare Drum CYM - Cymbal HH - Hi-Hat
 
 0C
 SD - Snare Drum TM - Tom-Tom / High Tom 

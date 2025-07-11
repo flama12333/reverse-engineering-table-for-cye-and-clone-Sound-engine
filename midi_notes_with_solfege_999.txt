@@ -70,16 +70,15 @@ Offset 05 - Channel 5
 Offset 06 - Channel 6
 
 instrumet and volumen change - Broken?
-70 until 7f seem to be instrument
-instrument list
-70 78 Organ
-71 79 Horn
-72 7a Synthsizer
-73 7b Harp
-74 7c Vibraphone
-75 7d Synthesizer Bass
-76 7e Wood Bass
-77 7f Electric Guitar
+70 until 7f seem to be instrument. will be different if change instrument track
+70 78
+71 79
+72 7a
+73 7b
+74 7c
+75 7d
+76 7e
+77 7f
 Offset 01 - Volume.
 
 80 hex. seem that was used to freeze notes in the channel

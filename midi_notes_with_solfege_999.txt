@@ -69,7 +69,7 @@ Offset 04 - Channel 4
 Offset 05 - Channel 5
 Offset 06 - Channel 6
 
-instrumet and volumen changer - Broken?
+instrumet and volumen change - Broken?
 70 until 7f seem to be instrument
 instrument list
 70 78 Organ

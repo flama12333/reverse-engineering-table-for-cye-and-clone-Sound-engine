@@ -1,4 +1,3 @@
-
 # known issues: 
 # change program is not  working in gamehero midi.
 # make sure to enable MoreStrictProgChange = true
@@ -22,7 +21,7 @@
 # 63 - loop
 # 62 - no loop instant stop 
 #  instrument and bank if 80 then 00
-
+# lots of bugs.. Currently instrument map incompleted
 import mido
 from mido import MidiFile, MidiTrack, Message, MetaMessage, bpm2tempo
 
@@ -187,33 +186,51 @@ tempo = bpm2tempo(bpm)
 octave_shifts = [1, 1, 1, 1, 1, 1]
 base_grid = 127 # 127ms per grid unit
 
-# === Volume Configuration ===  # Default
-channel_volumes = [0, 0, 0, 0, 0, 0, 0]  # Channels 0-7
+# === Volume Configuration ===
+# Main channel volumes (0-6)
+channel_volumes = [127, 127, 127, 127, 127, 127, 127]  # Default volumes
+hex_volume_input = [0x14, 0x14, 0x14, 0x14, 0x14, 0x14, 0x14]  # Hex input for volumes
 
-# Example hex input: each value from 0x00 to 0x7F
-hex_volume_input = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
-
-# Instrument configuration
-channel_instruments = [1, 1, 1, 1, 1, 1]  # Default instruments for channels 0-5 (0 = Acoustic Grand Piano)
-hex_instrument_input = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00]  # Example instrument input (1-based)
+# Drum-specific volume configuration
+drums_channel_volumes = [127, 127, 127, 127, 127]  # Default volumes for drum channels [HH, CYM, TM, SD, BD]
+drums_hex_volume_input = [0x14, 0x14, 0x14, 0x14, 0x14]  # Hex input for drum volumes
 
 def hex_to_volume(hex_list):
-    """
-    Converts 7 hex values (0x00–0x7F) to MIDI volume values (127–0).
-    0x00 -> 127 (max volume), 0x7F -> 0 (min volume)
-    """
+    """Convert hex values (0x00-0x7F) to MIDI volume (127-0)"""
     return [127 - int(val) for val in hex_list]
 
-def convert_instrument_value(hex_list):
-    """
-    Converts instrument value to proper MIDI program number (0-127).
-    Uses the custom MIDI_INSTRUMENT_MAP for conversion.
-    """
-    return [get_instrument_from_hex(val) for val in hex_list]
-
-# Apply hex volume if provided
+# Apply hex volume input if provided
 if hex_volume_input and len(hex_volume_input) == 7:
     channel_volumes = hex_to_volume(hex_volume_input)
+
+if drums_hex_volume_input and len(drums_hex_volume_input) == 5:
+    drums_channel_volumes = hex_to_volume(drums_hex_volume_input)
+
+# Drum note to drum channel mapping
+drum_note_mapping = {
+    42: 0,  # HH (Closed Hi-Hat) - drums_channel_volumes[0]
+    59: 1,  # CYM (Crash Cymbal) - drums_channel_volumes[1]
+    41: 2,  # TM (High Tom) - drums_channel_volumes[2]
+    38: 3,  # SD (Snare Drum) - drums_channel_volumes[3]
+    35: 4   # BD (Bass Drum) - drums_channel_volumes[4]
+}
+
+def get_drum_velocity(note):
+    """Get velocity for drum note based on drums_channel_volumes"""
+    channel = drum_note_mapping.get(note)
+    if channel is not None and channel < len(drums_channel_volumes):
+        volume = drums_channel_volumes[channel]
+    else:
+        volume = channel_volumes[6]  # Fallback to channel 6 volume
+    return min(127, int(base_velocity * (volume / 127.0)))
+
+# Instrument configuration
+channel_instruments = [1, 1, 1, 1, 1, 1]  # Default instruments for channels 0-5
+hex_instrument_input = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00]  # Example instrument input
+
+def convert_instrument_value(hex_list):
+    """Convert instrument hex values to MIDI program numbers"""
+    return [get_instrument_from_hex(val) for val in hex_list]
 
 # Apply instrument settings if provided
 if hex_instrument_input and len(hex_instrument_input) == 6:
@@ -223,57 +240,53 @@ if hex_instrument_input and len(hex_instrument_input) == 6:
 def get_drum_notes(byte):
     base_byte = byte & 0x1f
     drum_map = {
-            0x00:  127,                      # 
-            0x01:  42,                       # HH - Closed Hi-Hat
-            0x02:  59,                       # CYM - Crash Cymbal
-            0x03: [59, 42],                  # CYM + HH
-            0x04:  41,                       # TM - High Tom
-            0x05: [41, 42],                  # TM + HH
-            0x06: [41, 59],                  # TM + CYM
-            0x07: [41, 59, 42],              # TM + CYM + HH
-            0x08:  38,                       # SD - Snare Drum
-            0x09: [38, 42],                  # SD + HH
-            0x0A: [38, 59],                  # SD + CYM
-            0x0B: [38, 59, 42],              # SD + CYM + HH
-            0x0C: [38, 41],                  # SD + TM
-            0x0D: [38, 41, 42],              # SD + TM + HH
-            0x0E: [38, 41, 59],              # SD + TM + CYM
-            0x0F: [38, 41, 59, 42],          # SD + TM + CYM + HH
-            0x10:  35,                       # BD - Bass Drum
-            0x11: [35, 42],                  # BD + HH
-            0x12: [35, 59],                  # BD + CYM
-            0x13: [35, 59, 42],              # BD + CYM + HH
-            0x14: [35, 41],                  # BD + TM
-            0x15: [35, 41, 42],              # BD + TM + HH
-            0x16: [35, 41, 59],              # BD + TM + CYM
-            0x17: [35, 41, 59, 42],          # BD + TM + CYM + HH
-            0x18: [35, 38],                  # BD + SD
-            0x19: [35, 38, 42],              # BD + SD + HH
-            0x1A: [35, 38, 59],             # BD + SD + CYM
-            0x1B: [35, 38, 59, 42],          # BD + SD + CYM + HH
-            0x1C: [35, 38, 41],              # BD + SD + TM
-            0x1D: [35, 38, 41, 42],          # BD + SD + TM + HH
-            0x1E: [35, 38, 41, 59],          # BD + SD + TM + CYM
-            0x1F: [35, 38, 41, 59, 42],      # BD + SD + TM + CYM + HH
-            
+        0x00:  127,                      # 
+        0x01:  42,                       # HH - Closed Hi-Hat
+        0x02:  59,                       # CYM - Crash Cymbal
+        0x03: [59, 42],                  # CYM + HH
+        0x04:  41,                       # TM - High Tom
+        0x05: [41, 42],                  # TM + HH
+        0x06: [41, 59],                  # TM + CYM
+        0x07: [41, 59, 42],              # TM + CYM + HH
+        0x08:  38,                       # SD - Snare Drum
+        0x09: [38, 42],                  # SD + HH
+        0x0A: [38, 59],                  # SD + CYM
+        0x0B: [38, 59, 42],              # SD + CYM + HH
+        0x0C: [38, 41],                  # SD + TM
+        0x0D: [38, 41, 42],              # SD + TM + HH
+        0x0E: [38, 41, 59],              # SD + TM + CYM
+        0x0F: [38, 41, 59, 42],          # SD + TM + CYM + HH
+        0x10:  35,                       # BD - Bass Drum
+        0x11: [35, 42],                  # BD + HH
+        0x12: [35, 59],                  # BD + CYM
+        0x13: [35, 59, 42],              # BD + CYM + HH
+        0x14: [35, 41],                  # BD + TM
+        0x15: [35, 41, 42],              # BD + TM + HH
+        0x16: [35, 41, 59],              # BD + TM + CYM
+        0x17: [35, 41, 59, 42],          # BD + TM + CYM + HH
+        0x18: [35, 38],                  # BD + SD
+        0x19: [35, 38, 42],              # BD + SD + HH
+        0x1A: [35, 38, 59],              # BD + SD + CYM
+        0x1B: [35, 38, 59, 42],          # BD + SD + CYM + HH
+        0x1C: [35, 38, 41],              # BD + SD + TM
+        0x1D: [35, 38, 41, 42],          # BD + SD + TM + HH
+        0x1E: [35, 38, 41, 59],          # BD + SD + TM + CYM
+        0x1F: [35, 38, 41, 59, 42],      # BD + SD + TM + CYM + HH
     }
     return drum_map.get(base_byte, [])
 
 # === MIDI Setup ===
 mid = MidiFile()
 hex_strings = [
-
-
-
    # Channel 0 - 1 
-    "3C 83 37 83 39 83 37 83 3C 83 37 83 39 83 37 83 34 83 61 81 30 81 37 83 61 81 34 81 3C 81 34 81 3B 81 34 81 39 81 37 81 34 81 30 81 35 83 61 81 2F 81 37 83 61 81 2F 81 3B 81 32 81 39 81 32 81 37 81 35 81 2D 81 2F 81 34 83 61 81 30 81 37 83 61 81 34 81 3C 81 34 81 3B 81 34 81 39 81 37 81 34 81 30 81 35 81 2F 81 32 81 35 81 39 81 37 81 2D 81 2F 81 30 8F 40 85 3C 81 43 85 40 81 48 81 40 81 47 81 40 81 45 81 43 81 40 81 3C 81 41 83 61 81 3B 81 43 83 61 81 3B 81 47 81 3E 81 45 81 3E 81 43 81 41 81 39 81 3B 81 40 85 3C 81 43 85 40 81 48 83 47 83 45 81 43 81 40 81 3C 81 41 81 3B 81 3E 81 41 81 45 81 43 81 39 81 3B 81 3C 8B 40 81 61 81 40 81 61 81 3E 87 3E 81 61 81 3C 81 61 81 3C 87 3C 81 61 81 3B 81 61 81 39 85 39 81 39 81 39 81 39 81 61 81 37 87 34 81 61 81 34 81 61 81 32 87 32 81 61 81 3C 81 61 81 3C 87 3C 81 61 81 3B 81 61 81 39 87 37 83 30 8F 63",
+   "2B 81 2D 81 2F 81 30 83 34 83 35 83 34 83 30 81 2F 81 2D 81 30 81 30 81 2B 81 2D 81 2F 81 30 83 34 83 35 83 34 83 30 81 2F 81 2D 81 30 81 30 81 30 81 32 81 34 81 35 83 39 83 3A 83 39 83 35 81 34 81 32 81 34 81 35 81 2B 81 2D 81 2F 81 30 83 34 81 35 81 35 83 34 83 30 81 2F 81 2D 81 30 81 30 81 28 81 29 81 2A 81 2B 83 2E 81 30 81 32 83 34 81 32 81 29 83 2D 81 2E 81 30 83 32 81 2D 81 30 83 34 83 35 83 34 83 30 81 2F 81 2D 81 30 81 61 85 37 81 3B 81 3C 81 3C 81 37 81 3E 81 40 81 3E 81 40 81 3E 81 40 81 3C 81 37 81 35 37 33 81 35 81 34 81 39 83 3E 81 39 81 3C 81 3E 81 3E 81 39 81 40 41 3E 81 39 81 37 39 37 81 35 81 32 83 3E 81 40 81 40 81 3E 40 40 81 40 81 3E 40 40 81 3B 83 39 81 3B 81 3B 39 37 81 34 81 61 81 3E 81 61 81 61 8B 61 8F 34 82 34 34 81 34 81 37 39 3B 81 3D 81 3B 81 37 81 39 81 34 81 2F 81 2D 81 2B 2D 28 83 32 82 32 39 3B 39 81 34 81 35 81 32 81 2D 81 32 81 2D 81 2B 81 28 29 26 83 61 83 3C 82 3C 3B 3C 3C 81 3C 3C 37 81 35 81 37 81 37 34 30 81 37 81 32 34 30 83 61 83 35 36 39 35 37 39 35 37 39 35 37 39 35 37 39 81 39 3B 3E 39 3B 3E 39 3B 3E 39 3B 3E 39 3B 3E 81 3C 82 3C 3B 3C 3C 81 3C 3C 40 81 41 43 43 43 41 43 43 43 41 43 43 43 43 41 40 81 41 81 40 81 3C 83 3C 83 3C 83 3C 83 35 37 37 81 35 33 30 81 34 81 30 81 34 81 35 81 37 37 35 33 35 37 37 35 34 81 35 37 37 35 34 81 35 37 81 3A 3A 81 35 37 3B 81 37 35 33 81 3A 3C 3C 81 3C 81 3F 81 41 43 43 43 41 43 43 43 41 3F 3C 81 40 81 41 81 40 81 3C 81 40 81 40 81 46 83 47 81 47 81 43 83 41 43 41 3F 41 43 41 81 40 3C 37 81 35 37 35 81 34 81 30 81 35 37 81 3A 3B 81 35 37 3B 81 37 33 30 81 34 81 35 37 81 3A 3B 81 35 37 3B 81 37 33 30 81 2F 81 63",
    # Channel 1 - 2
-   "61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 61 8F 43 8B 41 83 45 87 40 83 40 83 43 83 3E 83 3C 83 3C 81 3C 81 3C 83 3C 8B 43 83 3E 87 41 83 45 83 40 8B 61 8F 61 8F 61 8F",
+   "2B 81 2D 81 2F 81 30 83 34 83 35 83 34 83 30 81 2F 81 2D 81 30 81 30 81 2B 81 2D 81 2F 81 30 83 34 83 35 83 34 83 30 81 2F 81 2D 81 30 81 30 81 30 81 32 81 34 81 35 83 39 83 3A 83 39 83 35 81 34 81 32 81 34 81 35 81 2B 81 2D 81 2F 81 30 83 34 81 35 81 35 83 34 83 30 81 2F 81 2D 81 30 81 30 81 28 81 29 81 2A 81 2B 83 2E 81 30 81 32 83 34 81 32 81 29 83 2D 81 2E 81 30 83 32 81 2D 81 30 83 34 83 35 83 34 83 30 81 2F 81 2D 81 30 81 61 85 37 81 3B 81 3C 81 3C 81 37 81 3E 81 40 81 3E 81 40 81 3E 81 40 81 3C 81 37 81 35 37 33 81 35 81 34 81 39 83 3E 81 39 81 3C 81 3E 81 3E 81 39 81 40 41 3E 81 39 81 37 39 37 81 35 81 32 83 3E 81 40 81 40 81 3E 40 40 81 40 81 3E 40 40 81 3B 83 39 81 3B 81 3B 39 37 81 34 81 61 81 3E 81 61 81 61 8B 61 8F 34 82 34 34 81 34 81 37 39 3B 81 3D 81 3B 81 37 81 39 81 34 81 2F 81 2D 81 2B 2D 28 83 32 82 32 39 3B 39 81 34 81 35 81 32 81 2D 81 32 81 2D 81 2B 81 28 29 26 83 61 83 3C 82 3C 3B 3C 3C 81 3C 3C 37 81 35 81 37 81 37 34 30 81 37 81 32 34 30 83 61 83 35 36 39 35 37 39 35 37 39 35 37 39 35 37 39 81 39 3B 3E 39 3B 3E 39 3B 3E 39 3B 3E 39 3B 3E 81 3C 82 3C 3B 3C 3C 81 3C 3C 40 81 41 43 43 43 41 43 43 43 41 43 43 43 43 41 40 81 41 81 40 81 3C 83 3C 83 3C 83 3C 83 35 37 37 81 35 33 30 81 34 81 30 81 34 81 35 81 37 37 35 33 35 37 37 35 34 81 35 37 37 35 34 81 35 37 81 3A 3A 81 35 37 3B 81 37 35 33 81 3A 3C 3C 81 3C 81 3F 81 41 43 43 43 41 43 43 43 41 3F 3C 81 40 81 41 81 40 81 3C 81 40 81 40 81 46 83 47 81 47 81 43 83 41 43 41 3F 41 43 41 81 40 3C 37 81 35 37 35 81 34 81 30 81 35 37 81 3A 3B 81 35 37 3B 81 37 33 30 81 34 81 35 37 81 3A 3B 81 35 37 3B 81 37 33 30 81 2F 81 63",
 
    # Channel 2 - 3
-    "61 9F 24 87 1F 87 24 87 1F 87 1F 87 1A 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 61 8F",
+   "61 9F 13 81 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 1A 81 1C 81 1D 83 1D 81 1D 81 18 83 1A 81 1C 81 1D 81 18 81 1D 81 18 81 18 81 13 81 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 1C 81 1D 81 1F 83 1F 81 1F 81 1A 83 1F 81 1E 81 1D 83 1D 81 1D 81 18 83 21 81 23 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 18 81 19 81 1A 83 1A 81 1A 81 15 83 18 81 19 81 1A 83 1A 81 1A 81 61 81 15 81 1A 81 1B 81 1C 87 1C 81 17 81 1A 81 1B 81 1F 83 1C 81 17 81 61 81 17 81 1C 81 1C 81 1A 81 61 81 61 8B 61 8F 1C 83 1C 81 1C 81 17 83 1A 81 1A 81 1C 83 1C 81 1C 81 17 83 1C 81 1C 81 1A 83 1A 81 1A 81 15 83 18 81 18 81 1A 83 1A 81 1A 81 15 83 1A 81 1A 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 18 81 18 81 1A 83 1A 81 1A 81 1A 81 1A 81 1D 81 1F 81 21 81 21 81 1F 81 1F 81 1D 81 1D 81 1A 81 1A 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 1A 81 1C 81 1D 83 1D 81 1D 81 18 83 1A 81 1C 81 1D 83 1D 81 1D 81 18 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 1C 81 1D 81 1F 83 1F 81 1F 81 1A 81 1A 81 1F 81 1F 81 1D 83 1D 81 1D 81 18 81 18 81 21 81 23 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 61 FE 8F",
    # Channel 3 - 4
-    "61 9F 24 87 1F 87 24 87 1F 87 1F 87 1A 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 1F 87 1A 87 24 87 1F 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 1F 87 1A 87 24 87 1F 87 61 8F",
+   "61 9F 13 81 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 1A 81 1C 81 1D 83 1D 81 1D 81 18 83 1A 81 1C 81 1D 81 18 81 1D 81 18 81 18 81 13 81 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 1C 81 1D 81 1F 83 1F 81 1F 81 1A 83 1F 81 1E 81 1D 83 1D 81 1D 81 18 83 21 81 23 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 18 81 19 81 1A 83 1A 81 1A 81 15 83 18 81 19 81 1A 83 1A 81 1A 81 61 81 15 81 1A 81 1B 81 1C 87 1C 81 17 81 1A 81 1B 81 1F 83 1C 81 17 81 61 81 17 81 1C 81 1C 81 1A 81 61 81 61 8B 61 8F 1C 83 1C 81 1C 81 17 83 1A 81 1A 81 1C 83 1C 81 1C 81 17 83 1C 81 1C 81 1A 83 1A 81 1A 81 15 83 18 81 18 81 1A 83 1A 81 1A 81 15 83 1A 81 1A 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 18 81 18 81 1A 83 1A 81 1A 81 1A 81 1A 81 1D 81 1F 81 21 81 21 81 1F 81 1F 81 1D 81 1D 81 1A 81 1A 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 1A 81 1C 81 1D 83 1D 81 1D 81 18 83 1A 81 1C 81 1D 83 1D 81 1D 81 18 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 1C 81 1D 81 1F 83 1F 81 1F 81 1A 81 1A 81 1F 81 1F 81 1D 83 1D 81 1D 81 18 81 18 81 21 81 23 81 18 83 18 81 18 81 13 83 15 81 17 81 18 83 18 81 18 81 13 83 15 81 17 81 61 FE 8F",
     
    # Channel 4 - 5
     "",
@@ -282,11 +295,7 @@ hex_strings = [
     "",
 
    # Channel 6 (Drums) -7 - 5
-    "10 83 10 83 10 83 10 83 10 83 10 83 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 18 81 18 18 08 81 08 81 18 08 08 81 08 81 08 81 20 8F",
-
-
-
-
+    "20 85 10 83 10 83 10 83 10 83 10 83 10 83 10 83 10 83 10 83 18 83 10 83 18 83 10 83 18 83 10 83 18 83 10 83 18 83 10 83 18 83 10 83 18 83 10 83 18 83 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 11 81 09 81 18 08 08 18 18 08 08 18 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 11 81 01 81 19 81 09 81 11 81 01 81 19 81 01 81 20 FE FE FE FE FE 8F",
 
 ]  # 7 channels
 
@@ -329,17 +338,15 @@ for ch, hex_str in enumerate(hex_strings):
             continue
 
         elif byte == 0x62:
-
             i += 1
             continue
         elif byte == 0x63:
-
             i += 1
             continue
             
         elif byte == 0x64 and i + 3 < len(data):
             loop_time = data[i + 1]
-            addr_le = data[i + 2] | (data[i + 3] << 8)  # Little endian to int
+            addr_le = data[i + 2] | (data[i + 3] << 8)
             print(f"Channel {ch}: 64 command - Loop {loop_time}x and Jump address 0x{addr_le:04X}")
             i += 4
             continue
@@ -382,7 +389,7 @@ for ch, hex_str in enumerate(hex_strings):
 
         elif byte == 0x73:
             if i + 1 < len(data):
-                param = data[i + 1]  # Volume byte
+                param = data[i + 1]
                 inverted_volume = 127 - param
                 if ch < len(channel_volumes):
                     channel_volumes[ch] = inverted_volume
@@ -390,7 +397,7 @@ for ch, hex_str in enumerate(hex_strings):
                 track.append(Message('control_change', control=7, value=inverted_volume, channel=midi_channel, time=time_accum))
 
                 print(f"Channel {ch}: 73 command - Parameter={param:02X} (Volume inverted to {inverted_volume})")
-                i += 2  # Advance past 73 + param
+                i += 2
                 time_accum = 0
                 continue
             else:
@@ -404,8 +411,6 @@ for ch, hex_str in enumerate(hex_strings):
             i += 1
             continue
 
-
-
         elif byte in range(0x00, 0x5f) and i + 1 < len(data) and data[i + 1] >= 0x81:
             duration = get_grid_multiplier(data[i + 1]) * base_grid
 
@@ -418,13 +423,13 @@ for ch, hex_str in enumerate(hex_strings):
                 if not isinstance(drum_notes, list):
                     drum_notes = [drum_notes]
 
-                drum_velocity = min(127, int(base_velocity * (channel_volumes[6] / 127.0)))
                 for note in drum_notes:
-                    track.append(Message('note_on', note=note, velocity=drum_velocity, time=time_accum, channel=9))
+                    velocity = get_drum_velocity(note)
+                    track.append(Message('note_on', note=note, velocity=velocity, time=time_accum, channel=9))
                     time_accum = 0
                 for j, note in enumerate(drum_notes):
                     track.append(Message('note_off', note=note, velocity=0,
-                                         time=duration if j == 0 else 0, channel=9))
+                                     time=duration if j == 0 else 0, channel=9))
                 time_accum = base_grid
             else:
                 midi_note = byte + (octave_shift * 12)
@@ -448,9 +453,9 @@ for ch, hex_str in enumerate(hex_strings):
                     continue
                 if not isinstance(drum_notes, list):
                     drum_notes = [drum_notes]
-                drum_velocity = min(127, int(base_velocity * (channel_volumes[6] / 127.0)))
                 for note in drum_notes:
-                    track.append(Message('note_on', note=note, velocity=drum_velocity, time=time_accum, channel=9))
+                    velocity = get_drum_velocity(note)
+                    track.append(Message('note_on', note=note, velocity=velocity, time=time_accum, channel=9))
                     time_accum = 0
                 for j, note in enumerate(drum_notes):
                     track.append(Message('note_off', note=note, velocity=0, time=base_grid if j == 0 else 0, channel=9))

@@ -26,7 +26,7 @@ Offset 0D Volume for Drums 5?
 
 Address where notes are located
 the address is not inverted but the start in 00 instead of 20.
-
+Length number instead of address.
 Offset 12 Channel 1
 Offset 14 Channel 2
 Offset 16 Channel 3
